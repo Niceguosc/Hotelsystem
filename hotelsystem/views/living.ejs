@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/jquery-ui.min.css"/>
+    <script src="/js/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/pageNav.js"></script>
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">酒店管理面板</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">退出登录</a></li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul id="main-nav" class="nav nav-tabs nav-stacked" style="">
+                <li>
+                    <a href="/Administration">
+                        <i class="glyphicon glyphicon-th-large"></i>
+                        酒店管理
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/living">
+                        <i class="glyphicon glyphicon-credit-card"></i>
+                        大堂入住
+                    </a>
+                </li>
+                <li>
+                    <a href="/order">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        订单入住
+                    </a>
+                </li>
+                <li>
+                    <a href="/out">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        退房管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/seara">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        入住记录查询
+                    </a>
+                </li>
+                <li>
+                    <a href="/house">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        房间管理
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/classification">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        房间类别
+                    </a>
+                </li>
+                <li >
+                    <a href="/icon">
+                        <i class="glyphicon glyphicon-fire"></i>
+                        图表展示
+                    </a>
+                </li>
+                <li>
+                    <a href="/modify">
+                        <i class="glyphicon glyphicon-fire"></i>
+                        修改密码
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">大堂入住</h1>
+            <div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">顾客信息</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>证件类型：
+                            <select name="IDname" id="IDname">
+                                <option value="身份证">身份证</option>
+                            </select>
+                            证件号：<input type="text" name="IDcard">
+                        </p>
+                        入住日期 : <input type="date" name="EnterTime"></p >
+                        <p> 离店日期 : <input type="date" name="LeaveTime">
+                        <p>姓名：
+                            <input type="text" name="name">
+                            性别：
+                            <select name="sex" id="sex">
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">房间信息</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>房间类型:
+                            <select name="RCategory" id="select"></select>
+                            房间号：
+                            <select name="typenum" class="select" id="hao"></select>
+
+                        </p>
+                        <p>房间剩余量：<span class="shengyu">1</span></p>
+                        <p>价格：<span class="price">123</span></p>
+                        <p>入住人姓名:
+                            <input type="text" name="name2">
+                            <span>多个入住请用逗号隔开</span>
+                        </p>
+                        <button type="button" class="btn btn-primary" id="over">查询完成</button>
+                        <button type="button" class="btn btn-primary" id="ok">办理入住</button>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    $.get('/readclass', function (data) {
+        $.each(data.results, function (i, n) {
+            $('<option value=' + n.name + '>' + n.name + '</option>').appendTo($("#select"))
+        })
+    })
+    $.get('/readhao/'+"商务间", function (data) {
+        $.each(data.results, function (i, n) {
+            $('<option value=' + n.sid + '>' + n.sid + '</option>').appendTo($("#hao"))
+        })
+    })
+    $("#select").change(
+       function () {
+           $("#hao").empty();
+           var leibie = $("#select").val();
+           // alert(leibie);
+           $.get('/readhao/'+leibie, function (data) {
+                       $.each(data.results, function (i, n) {
+                           $('<option value=' + n.sid + '>' + n.sid + '</option>').appendTo($("#hao"))
+                       })
+                   })
+       }
+    )
+    $("input[name=IDcard]").blur(function () {
+        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(reg.test($("input[name=IDcard]").val()) === false) {
+            alert("身份证输入不合法");
+            return false;
+        }else{
+            alert("输入正确")
+        }
+    })
+
+    $("#select").change(
+        function () {
+            var id = $("#select").val();
+            $.get("/selects/"+id,function (data) {
+                $(".shengyu").html("");
+                $(".price").html("");
+                $.each(data.results, function (i, n) {
+                    $(".shengyu").html(n.LAmount);
+                    $(".price").html(n.price);
+
+                });
+            })
+        }
+    )
+    $("#ok").click(function () {
+        $.post("/doaddB", {
+                IDname: $('#IDname').val(),
+                IDcard: $('input[name=IDcard]').val(),
+                name: $('input[name=name]').val(),
+                sex: $('#sex').val(),
+                RCategory: $('#select').val(),
+                typenum: $('#hao').val(),
+                shengyu:$('.shengyu').html(),
+                price:$('.price').html(),
+                name2: $('input[name=name2]').val(),
+                EnterTime:$("input[name=EnterTime]").val(),
+                LeaveTime:$("input[name=LeaveTime]").val(),
+            },
+
+            function (data) {
+                if (data.result == 1) {
+                    alert("提交成功！");
+                    window.location.href = '/living';
+                    $("input[type=text]").val("");
+                } else if (data.result == -1) {
+                    alert("提交失败，类别名被占用！");
+                } else if (data.result == -2) {
+                    alert("服务器错误！请联系管理员，怎么联系我也不知道！");
+                }
+            }
+        )
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/jquery-ui.min.css"/>
+    <script src="/js/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/pageNav.js"></script>
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">酒店管理面板</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">退出登录</a></li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul id="main-nav" class="nav nav-tabs nav-stacked" style="">
+                <li>
+                    <a href="/Administration">
+                        <i class="glyphicon glyphicon-th-large"></i>
+                        酒店管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/living">
+                        <i class="glyphicon glyphicon-credit-card"></i>
+                        大堂入住
+                    </a>
+                </li>
+                <li >
+                    <a href="/order">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        订单入住
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/out">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        退房管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/seara">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        入住记录查询
+                    </a>
+                </li>
+                <li>
+                    <a href="/house">
+                        <i class="glyphicon glyphicon-cog"></i>
+                        房间管理
+                    </a>
+
+                </li>
+
+                <li>
+                    <a href="/classification">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        房间类别
+                    </a>
+                </li>
+                <li >
+                    <a href="/icon">
+                        <i class="glyphicon glyphicon-fire"></i>
+                        图标展示
+                    </a>
+                </li>
+                <li>
+                    <a href="/modify">
+                        <i class="glyphicon glyphicon-fire"></i>
+                        修改密码
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">订单查询</h3>
+            </div>
+            <div class="panel-body">
+                <p>订单查询：
+                    <input type="text" name="tiaojian" class="tiaojian">
+                    <input type="button" value="查询" id="dingdan">
+                    <span>请输入订房号</span>
+
+                </p>
+            </div>
+            <h3 class="panel-title">订单详情</h3>
+            <div class="panel-body">
+                <!--<p>订单号：<span class="ddh">18</span></p>-->
+                <p>入住日期:<span class="intime"></span></p>
+                <p>离店日期:<span class="outtime"></span></p>
+                <p>房间类型: <span class="leibie"></span>
+                    预定数量：<span>1</span></p>
+                <p>入住人姓名：<span class="rname"></span></p>
+                <p>联系人：<span class="lname"></span>
+                    <!--联系电话：<span class="phone">12434</span>-->
+                </p>
+
+                <!--<p>留言:<span class="liuy">123</span></p>-->
+                <p>价格:<span class="price"></span></p>
+                天数:<span class="day"></span></p >
+                <p>总金额:<span class="money"></span>
+                <button class="tuichu">退房</button>
+            </div>
+            </div>
+    </div>
+</div>
+</div>
+
+<script>
+
+    $("#dingdan").click(function () {
+        var id = $(".tiaojian").val();
+        console.log(id);
+        $.get("/cha/" + id, function (data) {
+            console.log(data);
+            if (data.result != -1) {
+                $.each(data.results, function (i, n) {
+                    if(n.CategoryID!=undefined){
+                    // $('.ddh').html(n.OrderID);
+                    $('.intime').html(n.EnterTime);
+                    $('.outtime').html(n.LeaveTime);
+                    $('.leibie').html(n.CategoryID);
+                    $('.rname').html(n.CustomerName);
+                    $('.lname').html(n.LinkMan);
+                    // $('.phone').html(n.PhoneNumber);
+                    // $('.liuy').html(n.OrderRemarks);
+                    $('.price').html(n.Price);
+                    var endtime=n.LeaveTime.split("-")[2];
+                    var starttime=n.EnterTime.split("-")[2];
+                    $(".day").html(endtime-starttime);
+                    $(".money").html((endtime-starttime)*n.Price);
+                    }else {
+                        $('.intime').html(n.EnterTime);
+                        $('.outtime').html(n.LeaveTime);
+                        $('.leibie').html(n.RCategory);
+                        $('.rname').html(n.name);
+                        $('.lname').html(n.name);
+                        // $('.phone').html(n.PhoneNumber);
+                        // $('.liuy').html(n.OrderRemarks);
+                        $('.price').html(n.price);
+                        var endtime=n.LeaveTime.split("-")[2];
+                        var starttime=n.EnterTime.split("-")[2];
+                        $(".day").html(endtime-starttime);
+                        $(".money").html((endtime-starttime)*n.price);
+                    }
+                })
+            } else {
+                alert("没有这个房间");
+                $(".tiaojian").val("");
+            }
+        })
+    })
+
+    $('.tuichu').click(function () {
+        $.post('/gh', {
+            "RoomID": $('.tiaojian').val(),
+            "CustomerName":$('.lname').html(),
+            'EnterTime': $('.intime').html(),
+            'LeaveTime': $('.outtime').html(),
+             'CID':$('.leibie').html(),
+            'Monetary': $('.money').html(),
+
+        }, function () {
+            var id = $(".tiaojian").val();
+            $.get("/tuifang/" + id, function (data) {
+                console.log(data.result);
+                if (data.result == 1) {
+                    alert("退房成功");
+                    window.location = "/out";
+                }
+
+            })
+        })
+
+    })
+
+
+
+
+
+</script>
+</body>
+</html>

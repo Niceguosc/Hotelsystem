@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>酒店管理系统</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <style>
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background-image: url(/images/003.jpg);
+            background-repeat: repeat;
+            background-size: 100% 100%;
+        }
+
+        .text-muted {
+            color: #0f0f0f;
+        }
+
+        .nav-justified li a {
+            color: #3c3c3c;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        span {
+            color: #0e93d7;;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        p {
+            width: 74%;
+            float: right;
+        }
+
+        .tishi {
+            width: 225px;
+            position: absolute;
+            top: 90px;
+            left: 345px;
+            color: #0e93d7;;
+        }
+
+        #btn {
+            background: #BE7335;
+            color: #000;
+            border: none;
+        }
+
+        #ma {
+            position: absolute;
+            left: 290px;
+            top: 129px;
+            width: 70px;
+            height: 25px;
+            text-align: center;
+            float: left;
+            font-family: Arial;
+            font-style: italic;
+            font-weight: bold;
+            border: 1px solid #ccc;
+            background: #fff;
+            font-size: 19px;
+            line-height: 25px;
+        }
+
+        b {
+            font-size: 18px;
+            line-height: 25px;
+        }
+
+        .look {
+            display: none;
+            color: #000;
+            font-size: 18px;
+            font-family: Arial;
+        }
+
+        a {
+            color: #0e93d7;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- The justified navigation menu is meant for single line per list item.
+         Multiple lines will require custom code not provided by Bootstrap. -->
+    <div class="masthead">
+        <h3 class="text-muted">酒店管理系统</h3>
+        <nav class="navbar navbar-inverse">
+            <ul class="nav nav-justified">
+                <li class="active"><a href="/" style="color:#0e93d7">首页</a></li>
+                <li><a href="/reserve" style="color:#0e93d7">在线预订</a></li>
+                <li><a href="/query" style="color:#0e93d7">订单查询</a></li>
+                <li><a href="/login" style="color:#0e93d7">酒店管理</a></li>
+                <li><a href="#" style="color:#0e93d7">关于我们</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="container" style="position: relative;">
+        <div class="col-lg-4">
+            <h1>订单查询！</h1>
+            <br>
+            <div class="form-group">
+                <span>订单查询:</span>
+                <p>
+                    <input type="text" name="dingdan" id="dingdan">
+
+                </p>
+                <div class="tishi">
+                    请输入订房时所留联系人或联系电话
+                </div>
+            </div>
+            <div class="form-group">
+                <span>验证码:</span>
+                <p>
+                    <input type="text" name="yanzhengma" id="yanzheng">
+                <div id="ma">
+                    <b></b>
+                    <b></b>
+                    <b></b>
+                    <b></b>
+                </div>
+                </p>
+
+
+            </div>
+            <div class="form-group">
+                <a href="javascript:;" class="look">查看详情</a>
+            </div>
+
+            <span><button id="btn">查询</button></span>
+        </div>
+        <br>
+        <br>
+        <br>
+        <table class="table  table-bordered navbar-default" style="margin-top: 50px;">
+
+
+            <tbody id="tbody">
+
+            </tbody>
+        </table>
+
+        <div class="box" style="display:none;">
+            <div class="modal-body">
+                <div id="bjyg">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="bcgg">ok</button>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="/js/jquery-1.12.3.min.js"></script>
+    <script>
+        var code;
+
+        function createCode() {
+            code = '';
+            var codeLength = 4;
+            var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+            for (var i = 0; i < codeLength; i++) {
+                var index = Math.floor(Math.random() * 36);
+                code += random[index];
+            }
+            $('#ma').html(code);
+            $('#ma').css('color', color());
+        }
+
+        createCode();
+
+        function validate() {
+            var oValue = $('#yanzheng').val().toUpperCase();
+            if (oValue == 0) {
+                alert('请输入验证码');
+            } else if (oValue != code) {
+                alert('验证码不正确，请重新输入');
+                $('#yanzheng').val('');
+                createCode();
+            } else {
+                var id = $("#dingdan").val()
+                $.get("/finding/" + id, function (data) {
+                    // console.log(data);
+                    $.each(data.results, function (i, n) {
+                        $tr = $("<tr><th>订单号</th><th>入住时间</th><th>离开时间</th><th>房间类别</th><th>价格</th><th>客户姓名</th><th>联系人</th><th>联系电话</th><th>客户留言</th><th>操作</th></tr>");
+                        $tr.appendTo($("#tbody"));
+                        $tr2 = $("<tr class='shows update'></tr>");
+                        $("<td></td>").html(n.OrderID).appendTo($tr2);
+                        $("<td></td>").html(n.EnterTime).appendTo($tr2);
+                        $("<td></td>").html(n.LeaveTime).appendTo($tr2);
+                        $("<td></td>").html(n.CategoryID).appendTo($tr2);
+                        $("<td></td>").html(n.Price).appendTo($tr2);
+                        $("<td></td>").html(n.CustomerName).appendTo($tr2);
+                        $("<td></td>").html(n.LinkMan).appendTo($tr2);
+                        $("<td></td>").html(n.PhoneNumber).appendTo($tr2);
+                        $("<td></td>").html(n.OrderRemarks).appendTo($tr2);
+                        $("<td><input type='button' class='btn btn-danger delbtn' value='删除' data-sid='" + n._id + "'><input type='button' class='btn btn-info modbtn' value='修改' data-sid='" + n._id + "' id='myModalLabel'></td>").appendTo($tr2);
+                        $tr2.appendTo($("#tbody"));
+                    })
+                    createCode();
+                    $("#dingdan").val("");
+                    $("#yanzheng").val("");
+                })
+            }
+        }
+
+        function color() {
+            var color = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
+            return color;
+        }
+
+        $("#ma").click(function () {
+            createCode();
+        })
+        $("#btn").click(function () {
+            $("#tbody").html("");
+            validate();
+        })
+
+
+        $("#tbody").delegate(".delbtn", "click", function () {
+            if (!confirm("真的要删除吗")) {
+                return;
+            }
+            var sid = $(this).attr("data-sid");
+            // console.log(sid);
+            var $this = $(this);
+            $.ajax({
+                url: "/abcd/" + sid,
+                type: "delete",
+                success: function (data) {
+                    if (data.result == 1) {
+                        alert("删除成功");
+                        $('#tbody').children().remove();
+                        // window.location="/query"
+                    } else {
+                        alert("删除失败");
+                    }
+                }
+            })
+        })
+
+
+        $("#tbody").delegate(".modbtn", "click", function () {
+            $('.box').fadeIn('slow')
+
+            var sid = $(this).attr("data-sid");
+            $.ajax({
+                url: "/abcd/" + sid,
+                type: "get",
+                success: function (data) {
+                    // console.log(data.update);
+                    //     var dt=data.results
+                    if (data.result == -1) {
+                        alert("服务器错误");
+                    } else {
+                        $('#bjyg').html('<form><p><span>入住时间:</span><input type="date" class="EnterTime" name="EnterTime" value="' + data.update[0].EnterTime + '" ></p><p><span>离开时间:</span><input type="date" name="LeaveTime" class="LeaveTime" value="' + data.update[0].LeaveTime + '"></p><p><span>客户姓名:</span><input type="text" name="CustomerName" class="CustomerName" value="' + data.update[0].CustomerName + '"></p><p><span>联系人:</span><input type="text" name="LinkMan"  class="LinkMan" value="' + data.update[0].LinkMan + '"></p><p><span>联系电话:</span><input type="text" name="PhoneNumber" class="PhoneNumber" value="' + data.update[0].PhoneNumber + '"></p></form>')
+                    }
+                }
+            });
+        })
+
+
+        $('#bcgg').click(function () {
+            var sid = $('#myModalLabel').attr("data-sid");
+            console.log(sid);
+
+            $.post("/abcd/" + sid, {
+                EnterTime:$(".EnterTime").val(),
+                LeaveTime: $(".LeaveTime").val(),
+                CustomerName: $(".CustomerName").val(),
+                LinkMan: $(".LinkMan").val(),
+                PhoneNumber: $(".PhoneNumber").val()
+
+            }, function (data) {
+                if (data.result == 1) {
+                    alert("修改成功！");
+                    window.location = "/query";
+                } else {
+                    alert("服务器错误！请联系管理员，怎么联系我也不知道！");
+                }
+            })
+        })
+    </script>
+</body>
+</html>

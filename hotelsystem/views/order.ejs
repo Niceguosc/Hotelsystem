@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/jquery-ui.min.css"/>
+    <script src="/js/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/pageNav.js"></script>
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">酒店管理面板</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">退出登录</a></li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul id="main-nav" class="nav nav-tabs nav-stacked" style="">
+                <li>
+                    <a href="/Administration">
+                        <i class="glyphicon glyphicon-th-large"></i>
+                        酒店管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/living">
+                        <i class="glyphicon glyphicon-credit-card"></i>
+                        大堂入住
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/order">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        订单入住
+                    </a>
+                </li>
+                <li>
+                    <a href="/out">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        退房管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/seara">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        入住记录查询
+                    </a>
+                </li>
+                <li>
+                    <a href="/house">
+                        <i class="glyphicon glyphicon-cog"></i>
+                        房间管理
+                    </a>
+
+                </li>
+
+                <li>
+                    <a href="/classification">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        房间类别
+                    </a>
+                </li>
+                <li >
+                    <a href="/icon">
+                        <i class="glyphicon glyphicon-fire"></i>
+                        图表展示
+                    </a>
+                </li>
+                <li>
+                    <a href="/modify">
+                        <i class="glyphicon glyphicon-fire"></i>
+                        修改密码
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">订单入住</h1>
+            <div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">订单查询</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>订单查询：
+                            <input type="text" name="tiaojian" class="tiaojian">
+                            <input type="button" value="查询" id="dingdan">
+                            <span>请输入订房时所留联系人或联系电话</span>
+
+                        </p>
+                    </div>
+                    <h3 class="panel-title">订单详情</h3>
+                    <div class="panel-body">
+                        <p>订单号：<span class="ddh">18</span></p>
+                        <p>入住日期:<span class="intime"></span></p>
+                        <p>离店日期:<span class="outtime"></span></p>
+                        <p>房间类型: <span class="leibie"></span>
+                            预定数量：<span>1</span></p>
+                        <p>入住人姓名：<span class="rname"></span></p>
+                        <p>联系人：<span class="lname"></span> 联系电话：<span class="phone"></span></p>
+
+                        <p>留言:<span class="liuy"></span></p>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">办理入住</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>价格：<span class="price"></span>元/每天</p>
+                        <p>请选择房间：
+                            <select name="fangjian" id="select">
+
+                            </select>
+                        </p>
+                        <p>证件类型：
+                            <select name="zhengjian" id="zhengjian">
+                                <option value="身份证">身份证</option>
+                            </select>
+                            证件号：<input type="text" name="zhengjianhao" id="zhengjianhao">
+                        </p>
+                        <p>姓名：
+                            <input type="text" name="CustomerName" id="CustomerName">
+                            性别：
+                            <select name="sex" id="sex">
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+                        </p>
+                        <p>
+                            <button type="button" class="btn btn-success" id="que">确定
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<script>
+    // $.get('/readhao', function (data) {
+    //     $.each(data.results, function (i, n) {
+    //         $('<option value=' + n.sid + '>' + n.sid + '</option>').appendTo($("#select"))
+    //     })
+    // })
+    $("#dingdan").click(function () {
+        var id = $(".tiaojian").val();
+        console.log(id);
+        $.get("/finding/" + id, function (data) {
+            console.log(data);
+            if (data.result != -1) {
+                $.each(data.results, function (i, n) {
+                    $('.ddh').html(n.OrderID);
+                    $('.intime').html(n.EnterTime);
+                    $('.outtime').html(n.LeaveTime);
+                    $('.leibie').html(n.CategoryID);
+                    $('.rname').html(n.CustomerName);
+                    $('.lname').html(n.LinkMan);
+                    $('.phone').html(n.PhoneNumber);
+                    $('.liuy').html(n.OrderRemarks);
+                    $('.price').html(n.Price);
+
+                    var leibie = n.CategoryID;
+                    $.get('/readhao/' + leibie, function (data) {
+                        $.each(data.results, function (i, n) {
+                            $('<option value=' + n.sid + '>' + n.sid + '</option>').appendTo($("#select"))
+                        })
+                    })
+                })
+            } else {
+                alert("查无此人");
+                $(".tiaojian").val("");
+            }
+        })
+    })
+
+
+    $("#que").click(function () {
+        var id = $(".tiaojian").val();
+        console
+        $.post("/check/" + id, {
+            fangjian: $("#select").val(),
+            shenfen: $("#zhengjian").val(),
+            hao: $("#zhengjianhao").val(),
+            CustomerName: $("#CustomerName").val(),
+            sex: $("#sex").val()
+        }, function (data) {
+            if (data.result == 1) {
+                alert("提交成功");
+                window.location = "/order";
+            } else {
+                alert("服务器错误！请联系管理员，怎么联系我也不知道！");
+            }
+        })
+    })
+
+
+</script>
+</body>
+</html>

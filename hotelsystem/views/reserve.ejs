@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>酒店管理系统</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            background: url("images/003.jpg");
+            background-size: cover;
+            /*cover 显示不全  会丢失*/
+            /*contain  留白处填充*/
+        }
+        .text-muted{
+            color: #0f0f0f;
+        }
+        .nav-justified li a{
+            color: #0e93d7;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        #tbg{
+            width: 600px;
+            height: 700px;
+            background:rgba(255,255,255,0.8);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- The justified navigation menu is meant for single line per list item.
+         Multiple lines will require custom code not provided by Bootstrap. -->
+    <div class="masthead">
+        <h3 class="text-muted">酒店管理系统</h3>
+        <nav class="navbar navbar-inverse">
+            <ul class="nav nav-justified">
+                <li class="active"><a href="/">首页</a></li>
+                <li><a href="/reserve">在线预订</a></li>
+                <li><a href="/query">订单查询</a></li>
+                <li><a href="/login">酒店管理</a></li>
+                <li><a href="#">关于我们</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="tbg">
+        <h4 class="page-header">欢迎您！</h4>
+        <form  method="post" enctype="multipart/form-data">
+
+            <p> 入住日期 : <input type="date" name="EnterTime"></p>
+            <p> 离店日期 : <input type="date" name="LeaveTime"></p>
+            <p> 房间类型 : <select name="CategoryID" id="select"></select></p>
+            <p> 房间剩余数量 : <h1 class="Amount"></h1></p>
+            <p> 价格 : <h1><span class="mpr"></span>元/每天</h1></p>
+            <p> 入住人姓名 : <input type="text" name="CustomerName"> <i>多个人入住请用逗号隔开</i></p>
+            <p> 联系人 : <input type="text" name="LinkMan"> </p>
+            <p> 联系人电话 : <input type="number" name="PhoneNumber"></p>
+            <p>留言 : <textarea name="OrderRemarks" id="OrderRemarks" cols="30" rows="10"></textarea></p>
+
+            <input type="button" value="提交" id="tijiao">
+        </form>
+    </div>
+</div>
+
+
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/underscore.js"></script>
+<script>
+    $.get('/selects', function (data) {
+        // console.log(data)
+        $.each(data.results, function (i, n) {
+            $('<option value=' + n.name + '>' + n.name + '</option>').appendTo($("#select"))
+            $(".mpr").html(n.price);
+            $(".Amount").html(n.LAmount);
+        })
+    });
+
+
+    $("#select").change(
+        function () {
+            var id = $("#select").val();
+            $.get("/selects/"+id,function (data) {
+                $(".mpr").html("");
+                $(".Amount").html("");
+                $.each(data.results, function (i, n) {
+                    $(".Amount").html(n.LAmount);
+                    $(".mpr").html(n.price);
+
+                });
+            })
+        }
+    )
+    
+    $("#tijiao").click(function () {
+        var id=$("#select").val()
+        $.post("/addorder/"+id,{
+            "EnterTime":$("input[name=EnterTime]").val(),
+            "LeaveTime":$("input[name=LeaveTime]").val(),
+            "CategoryID":$("#select").val(),
+            "Amount":$(".Amount").html(),
+            "Price":$(".mpr").html(),
+            "CustomerName":$("input[name=CustomerName]").val(),
+            "LinkMan":$("input[name=LinkMan]").val(),
+            "PhoneNumber":$("input[name=PhoneNumber]").val(),
+            "OrderRemarks":$("#OrderRemarks").val(),
+            "Orderstatus":0
+        },function (result) {
+            if(result){
+                alert("订单成功");
+                window.location="/query";
+            }else{
+                alert("提交失败");
+            }
+        })
+    })
+</script>
+</body>
+</html>

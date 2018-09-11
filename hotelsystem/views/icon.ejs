@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/dashboard.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/jquery-ui.min.css"/>
+    <script src="/js/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/pageNav.js"></script>
+
+    <style>
+
+       .room{
+           margin-top: 20px;
+           margin-left: 30px;
+           width:150px;
+           height: 150px;
+           border: 1px solid #0f0f0f;
+           line-height: 150px;
+           text-align: center;
+       }
+    </style>
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">酒店管理面板</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">退出登录</a></li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul id="main-nav" class="nav nav-tabs nav-stacked" style="">
+                <li>
+                    <a href="/Administration">
+                        <i class="glyphicon glyphicon-th-large"></i>
+                        酒店管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/living">
+                        <i class="glyphicon glyphicon-credit-card"></i>
+                        大堂入住
+                    </a>
+                </li>
+                <li >
+                    <a href="/order">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        订单入住
+                    </a>
+                </li>
+                <li >
+                    <a href="/out">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        退房管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/seara">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        入住记录查询
+                    </a>
+                </li>
+                <li>
+                    <a href="/house">
+                        <i class="glyphicon glyphicon-cog"></i>
+                        房间管理
+                    </a>
+
+                </li>
+
+                <li>
+                    <a href="/classification">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        房间类别
+                    </a>
+                </li>
+                <li>
+                    <a href="/modify">
+                        <i class="glyphicon glyphicon-fire"></i>
+                        修改密码
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/icon">
+                        <i class="glyphicon glyphicon-fire"></i>
+                        图标展示
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">图标展示</h3>
+                    <h4>绿色为可选房间 红色为不可选房间</h4>
+                </div>
+                <div class="abc">
+                    <div id="row" class="row">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abc(){
+        $.get('/ics',function (results) {
+
+            for(var i=0;i<results.length;i++){
+                var str=`<div class="col-md-2 room">`+results[i].sid+results[i].RCategory+`</div>`;
+                $(".abc .row").append(str);
+                if(results[i].RoomStatus==false){
+                    console.log(i);
+                    console.log($("#row .room").eq(0));
+                    $("#row .room").eq(i).css("background","red");
+                }else{
+                    $("#row .room").eq(i).css("background","yellowgreen");
+                }
+
+
+            }
+        })
+    }
+
+    abc()
+
+</script>
+</body>
+</html>

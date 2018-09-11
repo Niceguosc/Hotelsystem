@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录管理系统</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body{
+            background: url("images/003.jpg");
+            background-size: cover;
+            /*cover 显示不全  会丢失*/
+            /*contain  留白处填充*/
+        }
+        .container{
+            width: 1000px;
+            height: 100%;
+            margin: 100px auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="col-lg-4">
+        <h1>欢迎登陆</h1>
+        <form>
+            <div class="form-group">
+                <label for="yonghuming">用户名</label>
+                <input type="text" class="form-control" name="yonghuming" id="yonghuming" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="mima">密码</label>
+                <input type="password" class="form-control" name="mima" id="mima" placeholder="">
+            </div>
+
+            <button type="button" class="btn btn-success" id="denglu">登陆</button>
+        </form>
+    </div>
+</div>
+
+
+
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<script type="text/javascript">
+    $("#denglu").click(function(){
+        var str = $("form").serialize();
+        $.post("/checklogin",str,function(data){
+            if(data.result == 1){
+                alert("登陆成功！");
+                window.location = "/Administration";
+            }else if(data.result == -1){
+                alert("用户名不存在!请先注册");
+                window.location.href='/reg';
+            }else if(data.result == -2){
+                alert("用户名存在，但是密码错误！");
+            }
+        })
+    });
+</script>
+</body>
+</html>

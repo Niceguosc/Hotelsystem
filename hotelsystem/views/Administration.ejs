@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>酒店管理系统</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url("images/001.jpg");
+            background-size: cover;
+            /*cover 显示不全  会丢失*/
+            /*contain  留白处填充*/
+        }
+
+        .text-muted {
+            color: #0f0f0f;
+        }
+
+        .nav-justified li a {
+            color: #0e93d7;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="masthead">
+        <h3 class="text-muted">酒店管理系统</h3>
+        <nav class="navbar navbar-inverse">
+            <ul class="nav nav-justified">
+                <li><a href="/">首页</a></li>
+                <li><a href="/reserve">在线预订</a></li>
+                <li><a href="/query">订单查询</a></li>
+                <li class="active"><a href="/Administration">酒店管理</a></li>
+                <li><a href="#">关于我们</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul id="main-nav" class="nav nav-tabs nav-stacked" style="">
+                <li>
+                    <a href="#">
+                        <i class="glyphicon glyphicon-th-large"></i>
+                        酒店管理
+                    </a>
+                </li>
+                <li>
+                    <a href="#systemSetting" class="nav-header collapsed" data-toggle="collapse">
+                        <i class="glyphicon glyphicon-cog"></i>
+                        入住管理
+                        <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                    <ul id="systemSetting" class="nav nav-list collapse secondmenu" style="height: 0px;">
+                        <li><a href="/living"><i class="glyphicon glyphicon-user"></i>大堂入住</a></li>
+                        <li><a href="/order"><i class="glyphicon glyphicon-th-list"></i>订单入住</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/out">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        退房管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/seara">
+                        <i class="glyphicon glyphicon-globe"></i>
+                        入住记录查询
+                <li>
+
+
+                <li>
+                    <a href="/living">
+                        <i class="glyphicon glyphicon-user"></i>
+                        大堂入住
+                    </a>
+                </li>
+                <li>
+                    <a href="/classification">
+                        <i class="glyphicon glyphicon-th-list"></i>
+                        房间类别管理
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/house">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                        房间信息管理
+                    </a>
+                </li>
+                <li >
+                    <a href="/icon">
+                    <i class="glyphicon glyphicon-fire"></i>
+                    图标展示
+                    </a>
+                </li>
+                <li>
+                    <a href="/modify">
+                        <i class="glyphicon glyphicon-fire"></i>
+                        修改密码
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/underscore.js"></script>
+
+</body>
+</html>
